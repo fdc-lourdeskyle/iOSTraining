@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RecommendedTeacherCell" id="gTV-IL-0wX" customClass="RecommendedTeacherCell" customModule="iOSTraining" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="210"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="120" height="210"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tls-13-zCV">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="210"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XFD-r7-BT9">
+                                <rect key="frame" x="0.0" y="0.0" width="120" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="90" id="QWd-yH-doL"/>
+                                    <constraint firstAttribute="height" constant="90" id="Zof-sS-tOi"/>
+                                    <constraint firstAttribute="width" constant="120" id="qum-OJ-QAJ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="xZ8-Sq-6OW"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Teacher name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="muF-sl-Wit">
+                                <rect key="frame" x="0.0" y="90" width="120" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="oFx-sd-cFQ"/>
+                                    <constraint firstAttribute="width" constant="120" id="tEW-vN-wfs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="H9J-xj-ZJC" userLabel="Address">
+                                <rect key="frame" x="0.0" y="110" width="120" height="25"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="korea" translatesAutoresizingMaskIntoConstraints="NO" id="5T3-Rv-k04" userLabel="CountryFlag">
+                                        <rect key="frame" x="0.0" y="2.6666666666666714" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="Ke4-zC-06n"/>
+                                            <constraint firstAttribute="width" constant="20" id="yd9-Aa-bfY"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0L-rj-aAH" userLabel="Address">
+                                        <rect key="frame" x="25" y="5.3333333333333295" width="95" height="14.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="scf-6W-JBh"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="5Pe-PT-di4" userLabel="Rating">
+                                <rect key="frame" x="0.0" y="135" width="120" height="25"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="NoW-Ld-5z2" userLabel="CountryFlag">
+                                        <rect key="frame" x="0.0" y="5" width="15" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="tcj-hI-bSd"/>
+                                            <constraint firstAttribute="width" constant="15" id="wxn-x7-Sx3"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQd-8x-cxL" userLabel="Address">
+                                        <rect key="frame" x="20" y="5.3333333333333437" width="100" height="14.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="MRM-2k-pLX"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="J2D-ak-Rpx" userLabel="Lesson">
+                                <rect key="frame" x="0.0" y="160" width="120" height="25"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="analysis" translatesAutoresizingMaskIntoConstraints="NO" id="sP2-uH-Lbn" userLabel="CountryFlag">
+                                        <rect key="frame" x="0.0" y="5" width="15" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="9Xi-ZW-4J9"/>
+                                            <constraint firstAttribute="width" constant="15" id="Yea-eq-M8z"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sW-WY-8H8" userLabel="Address">
+                                        <rect key="frame" x="20" y="5.3333333333333437" width="100" height="14.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="JeG-Gz-Iqj"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Tp3-YA-zce" userLabel="Favorites">
+                                <rect key="frame" x="0.0" y="185" width="120" height="25"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hand" translatesAutoresizingMaskIntoConstraints="NO" id="zeS-A8-u6j" userLabel="CountryFlag">
+                                        <rect key="frame" x="0.0" y="5" width="15" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="15" id="d1X-zp-Cnj"/>
+                                            <constraint firstAttribute="height" constant="15" id="z5p-2h-PmJ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SMy-g3-Vix" userLabel="Address">
+                                        <rect key="frame" x="20" y="5.3333333333333437" width="100" height="14.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="9ln-iH-bnL"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="UVF-mu-rVt"/>
+                            <constraint firstAttribute="height" constant="210" id="cTk-sI-TTQ"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="tls-13-zCV" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="GlG-FY-k0c"/>
+                <constraint firstAttribute="bottom" secondItem="tls-13-zCV" secondAttribute="bottom" id="L75-Z0-33r"/>
+                <constraint firstItem="tls-13-zCV" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="YUj-SL-XcM"/>
+                <constraint firstItem="tls-13-zCV" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="bRe-75-pC9"/>
+                <constraint firstItem="tls-13-zCV" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="tiU-l4-COQ"/>
+                <constraint firstAttribute="trailing" secondItem="tls-13-zCV" secondAttribute="trailing" id="tzT-0U-Jd4"/>
+            </constraints>
+            <size key="customSize" width="120" height="210"/>
+            <connections>
+                <outlet property="teacherAddress" destination="Y0L-rj-aAH" id="mMQ-y3-hHu"/>
+                <outlet property="teacherCountryImg" destination="5T3-Rv-k04" id="ded-Nw-IhM"/>
+                <outlet property="teacherFavoriteCount" destination="SMy-g3-Vix" id="wvV-CJ-4Oc"/>
+                <outlet property="teacherImage" destination="XFD-r7-BT9" id="2qE-mq-mBx"/>
+                <outlet property="teacherLessonCount" destination="6sW-WY-8H8" id="1GS-c6-p5K"/>
+                <outlet property="teacherName" destination="muF-sl-Wit" id="ike-km-ibo"/>
+                <outlet property="teacherRating" destination="pQd-8x-cxL" id="5bv-8t-8Qm"/>
+            </connections>
+            <point key="canvasLocation" x="62.595419847328245" y="45.070422535211272"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="analysis" width="512" height="512"/>
+        <image name="hand" width="512" height="512"/>
+        <image name="korea" width="797" height="530"/>
+        <image name="star" width="512" height="512"/>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

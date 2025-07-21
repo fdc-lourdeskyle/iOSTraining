@@ -9,6 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
+    private let cellIdentifier = "HomeCell"
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

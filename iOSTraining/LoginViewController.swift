@@ -6,24 +6,113 @@
 //
 
 import UIKit
+import Combine
+import SwiftUI
 
 class LoginViewController: UIViewController {
-
+    
+    @IBOutlet weak var loginContainerView: UIView!
+    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var rememberMeButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
+    @IBAction func signInAction(_ sender: UIButton) {
 
-    /*
-    // MARK: - Navigation
+        print("Sign In button tapped!")
+        let username = userNameTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
+        
+        if username.isEmpty {
+            let alert = UIAlertController(
+                title: "Missing Information",
+                message: "Please enter username",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        if password.isEmpty {
+            let alert = UIAlertController(
+                title: "Missing Information",
+                message: "Please enter password.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+
+        let tabBarVC = MainTabBarController()
+        self.navigationController?.setViewControllers([tabBarVC], animated: true)
+        print("Username: \(username), Password: \(password)")
+
+//        let vc = UIHostingController(rootView: LoginSwiftUIView())
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
-    */
+    
+    @IBAction func rememberMeButton(_ sender: Any) {
+    }
+    
+    func setupTextFieldIcons() {
 
+        let userIcon = UIImageView(image: UIImage(named: "user"))
+        userIcon.contentMode = .scaleAspectFit
+        userIcon.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+
+        let userPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 24))
+        userPaddingView.addSubview(userIcon)
+        userIcon.center = userPaddingView.center
+
+        userNameTextField.leftView = userPaddingView
+        userNameTextField.leftViewMode = .always
+
+        let passwordIcon = UIImageView(image: UIImage(named: "lock"))
+        passwordIcon.contentMode = .scaleAspectFit
+        passwordIcon.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+
+        let passwordPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 24))
+        passwordPaddingView.addSubview(passwordIcon)
+        passwordIcon.center = passwordPaddingView.center
+
+        passwordTextField.leftView = passwordPaddingView
+        passwordTextField.leftViewMode = .always
+    }
+}
+
+@IBDesignable
+class RoundedTextField: UITextField {
+    
+    @IBInspectable var cornerRadius: CGFloat = 8 {
+        didSet {
+            layer.cornerRadius = cornerRadius
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor = .lightGray {
+        didSet {
+            layer.borderColor = borderColor.cgColor
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat = 1 {
+        didSet {
+            layer.borderWidth = borderWidth
+        }
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = cornerRadius
+        layer.borderColor = borderColor.cgColor
+        layer.borderWidth = borderWidth
+        clipsToBounds = true
+    }
 }
