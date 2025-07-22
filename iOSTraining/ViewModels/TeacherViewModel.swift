@@ -11,35 +11,41 @@ import UIKit
 
 class TeacherViewModel: ObservableObject {
     @Published var teacher: Teacher
+    @Published var isFavorite: Bool = false
 
     var cancellables = Set<AnyCancellable>()
 
     init(teacher: Teacher) {
         self.teacher = teacher
+        self.teacher.isFavorite = UserDefaults.standard
+            .isFavorite(id: teacher.id ?? 0)
     }
 
     func toggleFavorite() {
-        teacher.isFavorited.toggle()
-        print("image tapped")
-        if teacher.isFavorited {
-            teacher.favoriteCount = (teacher.favoriteCount ?? 0) + 1
-        } else {
-            teacher.favoriteCount = max((teacher.favoriteCount ?? 0) - 1, 0)
-        }
+        UserDefaults.standard.toggleFavorite(id: teacher.id ?? 0)
+        teacher.isFavorite.toggle()
+        print("heart tapped")
     }
 
     func reserveTeacher() {
         var reserved = ReservedTeacherManager.shared.getReservedTeachers()
-        reserved.append(teacher)
+
+        if let id = teacher.id,
+            let index = reserved.firstIndex(where: { $0.id == id}){
+            reserved.remove(at: index)
+        }else{
+            reserved.append(teacher)
+        }
+
         ReservedTeacherManager.shared.save(reserved)
     }
 
     var favoriteImageName: String {
-        return teacher.isFavorited ? "heart.fill" : "heart"
+        return teacher.isFavorite ? "heart.fill" : "heart"
     }
 
     var favoriteTintColor: UIColor {
-        return teacher.isFavorited ? .systemOrange : .white
+        return teacher.isFavorite ? .systemOrange : .white
     }
 
     var favoriteCountText: String {
@@ -49,4 +55,5 @@ class TeacherViewModel: ObservableObject {
     var teacherCoinText: String {
         return "\(teacher.teacherReserveCoin ?? 0)"
     }
+
 }

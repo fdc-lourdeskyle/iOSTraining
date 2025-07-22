@@ -41,7 +41,7 @@ struct Teacher: Identifiable, Codable {
     let backgroundColor, shadowColor, strokeColor: String?
 
     //my local
-    var isFavorited: Bool = false
+    var isFavorite: Bool = false
     var localFavoriteCount: Int?
 
     enum CodingKeys: String, CodingKey {

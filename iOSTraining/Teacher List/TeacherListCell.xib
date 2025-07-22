@@ -222,17 +222,17 @@
                                 <rect key="frame" x="205" y="0.0" width="145" height="150"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="EUP-9C-NZu">
-                                        <rect key="frame" x="9.3333333333333162" y="32" width="20.666666666666671" height="17.333333333333336"/>
+                                        <rect key="frame" x="4" y="32" width="20.666666666666668" height="17.333333333333336"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfK-mE-Fc8">
-                                        <rect key="frame" x="14" y="50.333333333333336" width="11.333333333333336" height="15.666666666666664"/>
+                                        <rect key="frame" x="7.9999999999999991" y="50.333333333333336" width="12.666666666666664" height="15.666666666666664"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j48-7P-MnF">
-                                        <rect key="frame" x="33.000000000000007" y="26" width="69.666666666666686" height="28.333333333333329"/>
+                                        <rect key="frame" x="29.666666666666693" y="26" width="69.666666666666686" height="28.333333333333329"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Reserve">
                                             <fontDescription key="titleFontDescription" type="system" pointSize="12"/>
@@ -244,11 +244,12 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="zfK-mE-Fc8" firstAttribute="centerX" secondItem="EUP-9C-NZu" secondAttribute="centerX" id="C4e-q5-GOx"/>
+                                    <constraint firstItem="EUP-9C-NZu" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="4" id="IHf-MY-nIl"/>
                                     <constraint firstItem="EUP-9C-NZu" firstAttribute="top" secondItem="FPL-Rb-3a0" secondAttribute="top" constant="30" id="JV6-Lz-0oh"/>
                                     <constraint firstItem="j48-7P-MnF" firstAttribute="centerY" secondItem="EUP-9C-NZu" secondAttribute="centerY" id="NM0-nl-lcN"/>
                                     <constraint firstAttribute="bottom" secondItem="zfK-mE-Fc8" secondAttribute="bottom" constant="84" id="RBS-5A-9mY"/>
-                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="14" id="evW-rg-1hu"/>
-                                    <constraint firstItem="j48-7P-MnF" firstAttribute="leading" secondItem="EUP-9C-NZu" secondAttribute="trailing" constant="3" id="lMh-Vc-UVe"/>
+                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="8" id="U96-fF-Sjq"/>
+                                    <constraint firstItem="j48-7P-MnF" firstAttribute="leading" secondItem="EUP-9C-NZu" secondAttribute="trailing" constant="5" id="lMh-Vc-UVe"/>
                                     <constraint firstItem="zfK-mE-Fc8" firstAttribute="top" secondItem="EUP-9C-NZu" secondAttribute="bottom" id="y14-j0-bug"/>
                                     <constraint firstItem="j48-7P-MnF" firstAttribute="top" secondItem="FPL-Rb-3a0" secondAttribute="top" constant="26" id="yp3-x9-3lm"/>
                                 </constraints>

@@ -9,7 +9,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
 
         let firstVC = TeacherListViewController()
-//        let secondVC = ProductListViewController()
 
         let dummyVC = UIViewController()
         dummyVC.view.backgroundColor = .systemBackground

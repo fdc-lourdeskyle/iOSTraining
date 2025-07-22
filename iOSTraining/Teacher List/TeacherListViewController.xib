@@ -14,6 +14,8 @@
                 <outlet property="avatarTeacherCollection" destination="mLU-eZ-BT1" id="Gg6-WZ-lKo"/>
                 <outlet property="filterScrollView" destination="vyL-2Y-2oq" id="NCm-rc-5Vu"/>
                 <outlet property="filterStackView" destination="Uvn-mk-Ykk" id="tfd-cY-diS"/>
+                <outlet property="lessonsTabButton" destination="GW6-jO-6hN" id="xBl-ad-MJi"/>
+                <outlet property="ncAIButton" destination="NRG-WK-su1" id="x57-LK-1NN"/>
                 <outlet property="tableView" destination="lSP-dH-gaB" id="sdb-3h-92z"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -115,7 +117,7 @@
                                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vyL-2Y-2oq">
                                             <rect key="frame" x="0.0" y="80" width="393" height="60"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uvn-mk-Ykk">
+                                                <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Uvn-mk-Ykk">
                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </stackView>

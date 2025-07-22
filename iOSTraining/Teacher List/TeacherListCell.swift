@@ -28,6 +28,7 @@ class TeacherListCell: UITableViewCell{
     @IBAction func reserveButtonTapped(_ sender: UIButton) {
         print("reserve button tapped")
         viewModel?.reserveTeacher()
+        configureReserveButton()
     }
 
 
@@ -42,6 +43,16 @@ class TeacherListCell: UITableViewCell{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(favoriteTapped))
         favoriteButton.isUserInteractionEnabled = true
         favoriteButton.addGestureRecognizer(tapGesture)
+
+        viewModel?.$isFavorite
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateFavoriteUI()
+            }
+            .store(in: &cancellables)
+
+        updateFavoriteUI()
+
     }
 
 
@@ -83,24 +94,34 @@ class TeacherListCell: UITableViewCell{
             .store(in: &cancellables)
 
         updateFavoriteUI()
+        configureReserveButton()
     }
 
-//    func configureCell(_ teacher: Teacher){
-//        teacherNameLabel.text = teacher.nameEng
-//        teacherAddressLabel.text = teacher.countryName
-//        teacherAge.text =  "(Age: " + "\(teacher.age ?? 0)" + ")"
-//        teacherRating.text = "\(String(format: "%.2f", teacher.rating ?? 0.0))"
-//        teacherLessonCount.text =  "\(teacher.lessons ?? 0)"
-//        favoriteCount.text = viewModel?.favoriteCountText
-//
-//        if let urlString = teacher.imageMain, let url = URL(string: urlString) {
-//            teacherImage.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
-//        }
-//
-//        if let urlCountryString = teacher.countryImage, let urlCountry = URL(string: urlCountryString) {
-//            teacherCountryFlag.kf.setImage(with: urlCountry, placeholder: UIImage(named: "placeholder"))
-//        }
-//    }
+    private func configureReserveButton(){
+        guard let viewModel = viewModel else { return }
+
+        let isReserved = ReservedTeacherManager.shared
+            .getReservedTeachers()
+            .contains(where: { $0.id == viewModel.teacher.id})
+
+        var config = UIButton.Configuration.filled()
+        config.title = isReserved ? "Reserved" : "Reserve"
+        config.baseBackgroundColor = isReserved ? .systemOrange : .clear
+        config.baseForegroundColor = .white
+        config.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6)
+
+        var textAttr = AttributedString(config.title ?? "")
+        textAttr.font = .systemFont(ofSize: 10)
+        config.attributedTitle = textAttr
+
+        config.background.strokeColor = isReserved ? .black : .white
+        config.background.strokeWidth = 1
+
+        reserveButton.configuration = config
+        reserveButton.layer.cornerRadius = 8
+        reserveButton.clipsToBounds = true
+    }
+
 
     @objc private func favoriteTapped() {
         viewModel?.toggleFavorite()

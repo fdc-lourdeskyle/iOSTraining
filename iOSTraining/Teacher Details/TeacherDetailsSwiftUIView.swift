@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct TeacherDetailsSwiftUIView: View {
-    let viewModel: TeacherViewModel
+    @ObservedObject var viewModel: TeacherViewModel
+    @EnvironmentObject var teacherList: TeacherListViewModel
 
     var body: some View {
+
+        let recommendedTeachers = Array(
+            teacherList.teachers
+                .filter { $0.teacher.id != viewModel.teacher.id }
+                .prefix(5)
+        )
+
         ScrollView {
             VStack(spacing: 20) {
                 HeaderView(
@@ -22,8 +30,12 @@ struct TeacherDetailsSwiftUIView: View {
 
                 TeacherDetailView(viewModel: viewModel)
                 LessonButtonSection()
-                StudentActions()
+                StudentActions(viewModel: viewModel)
                 DetailTabSelector(viewModel: viewModel)
+
+                ImagesGridView()
+                RecommendedTeachersCollectionView(viewModel: viewModel, recommendedTeachers: recommendedTeachers)
+
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, 40)
@@ -135,16 +147,21 @@ struct LessonButtonSection: View {
 }
 
 struct StudentActions: View {
+    @ObservedObject var viewModel: TeacherViewModel
 
     var body: some View{
 
         HStack(spacing: 30){
             IconAboveLabelView(
-                imageName: "heart.fill",
+                imageName: viewModel.teacher.isFavorite ? "heart.fill" : "heart",
                 label: "Favorite",
                 useSystemImage: true,
                 iconSize: 22,
-                spacing: 8
+                spacing: 8,
+                foregroundColor: viewModel.teacher.isFavorite ? Color.orange : Color.white,
+                onTap: {
+                    viewModel.toggleFavorite()
+                }
             )
 
             IconAboveLabelView(
@@ -152,7 +169,11 @@ struct StudentActions: View {
                 label: "Refresh",
                 useSystemImage: true,
                 iconSize: 22,
-                spacing: 8
+                spacing: 8,
+                foregroundColor: Color.white,
+                onTap: {
+                   print("Refresh")
+                }
             )
 
             IconAboveLabelView(
@@ -160,7 +181,11 @@ struct StudentActions: View {
                 label: "Share",
                 useSystemImage: true,
                 iconSize: 22,
-                spacing: 8
+                spacing: 8,
+                foregroundColor: Color.white,
+                onTap: {
+                    print("Share")
+                }
             )
 
             IconAboveLabelView(
@@ -168,7 +193,11 @@ struct StudentActions: View {
                 label: "Keep Note",
                 useSystemImage: true,
                 iconSize: 22,
-                spacing: 8
+                spacing: 8,
+                foregroundColor: Color.white,
+                onTap: {
+                    print("Noted")
+                }
             )
         }.frame(maxWidth: .infinity)
 
@@ -283,9 +312,6 @@ struct TeacherDetailSectionView: View {
                     GenerationBar(label: "50s", percentage: 33.33)
                     GenerationBar(label: "60s-", percentage: 0.0)
                 }
-
-                ImagesGridView()
-
                 //Spacer()
             }
             .padding()
@@ -325,14 +351,15 @@ struct GenerationBar: View {
 }
 
 struct ImagesGridView: View {
+
     let images = ["blackpink", "meovv", "meovvot5", "blackpinkOT4"]
 
     @State private var showAll = false
 
     let columns = [
-        GridItem(.fixed(100), spacing: 8),
-        GridItem(.fixed(100), spacing: 8),
-        GridItem(.fixed(100), spacing: 8)
+        GridItem(.fixed(110), spacing: 8),
+        GridItem(.fixed(110), spacing: 8),
+        GridItem(.fixed(110), spacing: 8)
     ]
 
     var body: some View {
@@ -341,18 +368,15 @@ struct ImagesGridView: View {
             Text("Gallery")
                 .font(.headline)
 
-            // ✅ Removed inner ScrollView
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(showAll ? images : Array(images.prefix(3)), id: \.self) { image in
                     Image(image)
                         .resizable()
-                        .frame(width: 100, height: 90)
+                        .frame(width: 130, height: 130)
                         .aspectRatio(contentMode: .fill)
                         .clipped()
-                        .cornerRadius(8)
                 }
             }
-            .padding(.horizontal, 8)
 
             if images.count > 3 {
                 HStack {
@@ -366,12 +390,84 @@ struct ImagesGridView: View {
                             .font(.subheadline)
                             .foregroundColor(.orange)
                     }
-                    .padding(.trailing, 8)
+                    .padding(.trailing, 18)
                 }
             }
         }
     }
 }
+
+struct RecommendedTeachersCollectionView: View {
+    let viewModel: TeacherViewModel // current teacher
+    let recommendedTeachers: [TeacherViewModel]
+    @EnvironmentObject var teacherList: TeacherListViewModel
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Recommended Teachers")
+                .font(.headline)
+                .padding(.horizontal)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(recommendedTeachers, id: \.teacher.id) { teacherVM in
+                        NavigationLink(destination: TeacherDetailsSwiftUIView(viewModel: teacherVM).environmentObject(teacherList)
+                        ) {
+                            RecommendedTeacherView(viewModel: teacherVM)
+                                .frame(width: 140, height: 230)
+                                .cornerRadius(12)
+                                .shadow(radius: 2)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+}
+
+struct RecommendedTeacherView: View {
+    let viewModel: TeacherViewModel
+
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                // Top Half – Image
+                AsyncImage(url: URL(string: viewModel.teacher.imageMain ?? "")) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: geometry.size.height / 2)
+                        .clipped()
+                } placeholder: {
+                    Color.gray
+                        .frame(height: geometry.size.height / 2)
+                }
+
+                // Bottom Half – Info
+                VStack(alignment: .leading ,spacing: 4) {
+                    Text(viewModel.teacher.nameEng ?? "")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .frame(alignment: .center)
+                    CountryDetailView(
+                        imageUrl: viewModel.teacher.countryImage ?? "",
+                        label: viewModel.teacher.countryName ?? "Unknown"
+                    )
+                    IconWithTextView(systemImageName: "star", label: "\(viewModel.teacher.rating ?? 0.0)")
+                    IconWithTextView(systemImageName: "analysis", label: "\(viewModel.teacher.lessons ?? 0) lessons")
+                    IconWithTextView(systemImageName: "heart", label: "\(viewModel.teacher.favoriteCount ?? 0) favorites")
+                }
+                .padding(6)
+                .frame(height: geometry.size.height / 2)
+            }
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(12)
+        }
+    }
+}
+
 
 // MARK: - Preview
 

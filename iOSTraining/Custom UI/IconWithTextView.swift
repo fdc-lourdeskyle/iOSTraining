@@ -43,11 +43,13 @@ struct IconWithTextView: View {
 }
 
 struct IconAboveLabelView: View {
-    let imageName: String         // Can be systemName or asset
+    let imageName: String
     let label: String
-    let useSystemImage: Bool      // Toggle for SF Symbol vs Asset
+    let useSystemImage: Bool
     let iconSize: CGFloat
     let spacing: CGFloat
+    let foregroundColor: Color
+    let onTap: (() -> Void)?
 
     var body: some View {
         VStack(spacing: spacing) {
@@ -56,16 +58,22 @@ struct IconAboveLabelView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: iconSize, height: iconSize)
+                    .foregroundColor(foregroundColor)
             } else {
                 Image(imageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: iconSize, height: iconSize)
+                    .foregroundColor(foregroundColor)
             }
 
             Text(label)
                 .font(.footnote)
                 .multilineTextAlignment(.center)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
         }
     }
 }
