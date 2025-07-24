@@ -49,7 +49,6 @@ class TeacherListViewController: UIViewController {
         avatarTeacherCollection
             .register(avatarNib, forCellWithReuseIdentifier: avatarTeacherCellIdentifier)
 
-
         fetchTeachers()
         setupSegmentButtons()
         setupFilters()
@@ -58,8 +57,6 @@ class TeacherListViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        lessonsTabButton.applyBottomBorder(isSelected: lessonsTabButton.isSelected)
-        ncAIButton.applyBottomBorder(isSelected: ncAIButton.isSelected)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +73,6 @@ class TeacherListViewController: UIViewController {
                 self.teachers = result
                 self.avatarTeachers = result.filter { $0.countryName == "セルビア" }
 
-
                 self.teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
 
                 let teacherListVM = TeacherListViewModel(teachers: self.teachers)
@@ -87,6 +83,39 @@ class TeacherListViewController: UIViewController {
                 self.tableView.reloadData()
                 self.avatarTeacherCollection.reloadData()
             }
+        }
+    }
+
+    func setupSegmentButtons() {
+
+        [lessonsTabButton, ncAIButton].forEach { button in
+            button?.setTitleColor(.systemOrange, for: .normal)
+            button?.backgroundColor = .clear
+        }
+
+        lessonsTabButton.layoutIfNeeded()
+        lessonsTabButton.applyBottomBorder(isSelected: true)
+
+
+        ncAIButton.layoutIfNeeded()
+        ncAIButton.applyBottomBorder(isSelected: false)
+
+
+        lessonsTabButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
+        ncAIButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
+    }
+
+    @objc func segmentButtonTapped(_ sender: UIButton) {
+        // Reset borders
+        lessonsTabButton.applyBottomBorder(isSelected: false)
+        ncAIButton.applyBottomBorder(isSelected: false)
+
+        // Apply border to selected
+        sender.layoutIfNeeded()
+        sender.applyBottomBorder(isSelected: true)
+
+        if sender == ncAIButton {
+            print("NC AI")
         }
     }
 
@@ -146,40 +175,9 @@ class TeacherListViewController: UIViewController {
         }
     }
 
-
-    func setupSegmentButtons(){
-        lessonsTabButton.applyBottomBorder(isSelected: true)
-        ncAIButton.applyBottomBorder(isSelected: false)
-
-        lessonsTabButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
-        ncAIButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
-
-    }
-
-    @objc func segmentButtonTapped(_ sender: UIButton) {
-
-        lessonsTabButton.isSelected = (sender == lessonsTabButton)
-        ncAIButton.isSelected = (sender == ncAIButton)
-
-        lessonsTabButton.applyBottomBorder(isSelected: lessonsTabButton.isSelected)
-        ncAIButton.applyBottomBorder(isSelected: ncAIButton.isSelected)
-
-        
-
-        if sender == ncAIButton {
-            //            let ncaiView = NCAISwiftUIView()
-            //            let hostingController = UIHostingController(rootView: ncaiView)
-            //            self.navigationController?.pushViewController(hostingController, animated: true)
-            print("NCxAI")
-        } else {
-            // do nothing since it's the default
-        }
-    }
-
     @objc private func filterButtonTapped(_ sender: UIButton) {
         let title = sender.configuration?.title ?? ""
         print("Tapped:", title)
-//        guard let title = sender.currentTitle else { return }
 
         if selectedFilterButton != sender {
             selectedFilterButton?.isSelected = false
@@ -239,16 +237,27 @@ class TeacherListViewController: UIViewController {
             return cell
         }
 
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+            let selectedTeacher = avatarTeachers[indexPath.item]
+            let allTeachers = avatarTeachers
+
+            let teacherListViewModel = TeacherListViewModel(teachers: allTeachers)
+            let teacherViewModel = TeacherViewModel(teacher: selectedTeacher)
+
+            let swiftUIView = TeacherDetailsSwiftUIView(viewModel: teacherViewModel)
+                .environmentObject(teacherListViewModel)
+
+            let hostingController = UIHostingController(rootView: swiftUIView)
+            self.navigationController?.pushViewController(hostingController, animated: true)
+        }
+
     }
 
-    extension TeacherListViewController: UICollectionViewDelegate{
-
-    }
 
     extension TeacherListViewController: UICollectionViewDelegateFlowLayout{
 
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: 140, height: 250)
+            return CGSize(width: 120, height: 190)
 
         }
 
@@ -288,6 +297,10 @@ class TeacherListViewController: UIViewController {
 
             return cell
         }
+
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return 120
+        }
     }
 
 
@@ -306,5 +319,4 @@ class TeacherListViewController: UIViewController {
             self.navigationController?.pushViewController(hostingController, animated: true)
 
         }
-
     }

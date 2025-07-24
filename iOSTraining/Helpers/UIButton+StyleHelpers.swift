@@ -10,36 +10,17 @@ import UIKit
 
 extension UIButton {
 
-    func applyBottomBorder(isSelected: Bool){
+    func applyBottomBorder(isSelected: Bool, borderColor: UIColor = .systemOrange, height: CGFloat = 3) {
 
-        layer.sublayers?.removeAll(where: {$0.name == "BottomBorder"})
+        layer.sublayers?.removeAll(where: { $0.name == "bottomBorder" })
 
-        guard isSelected else { return }
-
-        if isSelected{
+        if isSelected {
             let border = CALayer()
-            border.name = "BottomBorder"
-            border.backgroundColor = UIColor.orange.cgColor
-            border.frame = CGRect(x: 0, y: bounds.height - 2, width: bounds.width, height: 2)
-            layer.addSublayer(border)
+            border.name = "bottomBorder"
+            border.backgroundColor = borderColor.cgColor
+            border.frame = CGRect(x: 0, y: self.bounds.height - height, width: self.bounds.width, height: height)
+            self.layer.addSublayer(border)
         }
     }
-
-    func configurePlainButton(_ button: UIButton) {
-        let title = button.title(for: .normal) ?? ""
-
-        var config = UIButton.Configuration.plain()
-        config.title = title
-        config.background.backgroundColor = .clear
-        config.baseForegroundColor = .orange// or white if needed
-        config.contentInsets = .zero
-
-        button.configuration = config
-
-        button.adjustsImageWhenHighlighted = false
-        button.showsTouchWhenHighlighted = false
-    }
-
-
 
 }

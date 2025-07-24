@@ -38,7 +38,7 @@ final class NetworkManager {
             .responseDecodable(of: TeachersResponse.self) { response in
                 switch response.result {
                 case .success(let teachersResponse):
-                    dump(teachersResponse.teachers)
+                    dump(teachersResponse)
                     completion(teachersResponse.teachers)
                 case .failure(let error):
                     print("Decoding error:", error)

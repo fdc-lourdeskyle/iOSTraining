@@ -25,7 +25,7 @@ struct TeacherDetailsSwiftUIView: View {
                     imageURL: viewModel.teacher.imageMain ?? "",
                     name: viewModel.teacher.nameEng ?? "Unknown",
                     age: viewModel.teacher.age ?? 0,
-                    statusColor: .red
+                    statusColor: viewModel.teacher.status ?? 0
                 )
 
                 TeacherDetailView(viewModel: viewModel)
@@ -48,7 +48,7 @@ struct HeaderView: View {
     var imageURL: String
     var name: String
     var age: Int
-    var statusColor: Color
+    var statusColor: Int
 
     var body: some View {
         HStack {
@@ -61,8 +61,7 @@ struct HeaderView: View {
             .frame(width: 30, height: 30)
             .clipShape(Circle())
 
-            Circle()
-                .fill(statusColor)
+            TeacherStatusIndicator(status: statusColor)
                 .frame(width: 10, height: 10)
 
             Text(name)
@@ -100,8 +99,6 @@ struct TeacherDetailView: View {
             } placeholder: {
                 Color.gray
             }
-            .aspectRatio(140/300, contentMode: .fit)
-            .clipped()
 
             DetailsSection(viewModel: viewModel)
         }

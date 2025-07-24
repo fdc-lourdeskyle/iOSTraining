@@ -17,27 +17,36 @@ class AvatarTeacherCollectionCell: UICollectionViewCell {
     @IBOutlet weak var teacherLessonCount: UILabel!
     @IBOutlet weak var teacherFavoriteCount: UILabel!
 
+    @IBOutlet weak var stackContainerView: UIView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        stackContainerView.layer.cornerRadius = 12
+        stackContainerView.layer.masksToBounds = true
+        stackContainerView.layer.borderWidth = 1
+        stackContainerView.layer.borderColor = UIColor.black.cgColor
+//        stackContainerView.backgroundColor = .white
+    }
+
     func configureCell(_ teacher: Teacher){
-        //        teacherImage.image = UIImage(named: teacher.imageMain ?? "")
         teacherName.text = teacher.nameEng
-        //        teacherCountryImg.image = UIImage(named: teacher.countryImage ?? "")
         teacherAddress.text = teacher.countryName
         teacherRating.text = String(format: "%.2f", teacher.rating ?? 0.0)
-        teacherLessonCount.text = "\(String(describing: teacher.lessons))"
-        teacherFavoriteCount.text = "\(String(describing: teacher.favoriteCount))"
+        teacherLessonCount.text = "\(teacher.lessons ?? 0)"
+        teacherFavoriteCount.text = "\(teacher.favoriteCount ?? 0)"
 
         if let urlString = teacher.imageMain, let url = URL(string: urlString) {
             teacherImage.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
         }
 
         if let urlCountryString = teacher.countryImage, let url = URL(string: urlCountryString) {
-            teacherCountryImg.image = UIImage(named: teacher.countryImage ?? "")
+            teacherCountryImg.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
         }
     }
 

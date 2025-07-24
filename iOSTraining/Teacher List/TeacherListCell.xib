@@ -28,12 +28,12 @@
                         <rect key="frame" x="95" y="5" width="350" height="150"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-Tl-s1O" userLabel="Details">
-                                <rect key="frame" x="5" y="0.0" width="200" height="158"/>
+                                <rect key="frame" x="5" y="0.0" width="200" height="151"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Esg-Yh-Una" userLabel="UpperPart">
                                         <rect key="frame" x="0.0" y="5" width="200" height="20"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gpg-iq-ugA" userLabel="TeacherStatus" customClass="CustomUIView" customModule="iOSTraining" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gpg-iq-ugA" userLabel="TeacherStatus" customClass="TeacherStatusIndicatorView" customModule="iOSTraining" customModuleProvider="target">
                                                 <rect key="frame" x="5" y="5" width="10" height="10"/>
                                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                 <constraints>
@@ -202,8 +202,8 @@
                                             <constraint firstItem="Lbq-i9-Kqi" firstAttribute="leading" secondItem="5gv-r5-gP4" secondAttribute="trailing" constant="5" id="zDI-a1-bVo"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-Vf-xon">
-                                        <rect key="frame" x="0.0" y="98" width="200" height="60"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-Vf-xon">
+                                        <rect key="frame" x="0.0" y="91" width="200" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="AJc-XO-q5f"/>
                                             <constraint firstAttribute="height" constant="60" id="XIJ-Lb-vhJ"/>
@@ -211,7 +211,7 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="RdX-Vf-xon" firstAttribute="top" secondItem="K1S-Dk-34C" secondAttribute="bottom" constant="10" id="Eqy-Gb-PHy"/>
+                                    <constraint firstItem="RdX-Vf-xon" firstAttribute="top" secondItem="K1S-Dk-34C" secondAttribute="bottom" constant="3" id="Eqy-Gb-PHy"/>
                                     <constraint firstAttribute="width" constant="200" id="Jug-UM-ufY"/>
                                     <constraint firstItem="K1S-Dk-34C" firstAttribute="top" secondItem="L2x-Lu-6no" secondAttribute="bottom" constant="8" id="SZi-IP-s87"/>
                                     <constraint firstItem="Esg-Yh-Una" firstAttribute="top" secondItem="oP1-Tl-s1O" secondAttribute="top" constant="5" id="Z6k-ky-SrV"/>
@@ -289,6 +289,7 @@
                 <outlet property="teacherLessonCount" destination="edV-7R-tRC" id="JlA-gu-JoK"/>
                 <outlet property="teacherNameLabel" destination="mbC-Wc-WgJ" id="DSf-2P-k5X"/>
                 <outlet property="teacherRating" destination="a5B-MQ-ylH" id="TgL-bi-SHX"/>
+                <outlet property="teacherStatus" destination="Gpg-iq-ugA" id="JLa-3Q-u82"/>
             </connections>
             <point key="canvasLocation" x="219.08396946564883" y="-50"/>
         </tableViewCell>
