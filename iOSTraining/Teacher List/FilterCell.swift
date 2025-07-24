@@ -55,7 +55,6 @@ class FilterCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-
             guard oldValue != isSelected else { return }
             var config = button.configuration
             config?.background.backgroundColor = isSelected ? .white : .clear

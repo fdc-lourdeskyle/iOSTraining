@@ -140,9 +140,9 @@ struct LessonButtonSection: View {
                 print("Delete tapped")
             }
 
-            ImageButton(imageName: "calendar 1", title: "Reserve Teacher") {
-                viewModel.reserveTeacher()
-            }
+            ReserveButtonView(
+                viewModel: viewModel
+            )
 
         }.frame(maxWidth: .infinity)
     }

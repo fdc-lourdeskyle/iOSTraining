@@ -12,7 +12,6 @@ import UIKit
 class TeacherViewModel: ObservableObject {
     @Published var teacher: Teacher
     @Published var isReserved: Bool = false
-    //@Published var isFavorite: Bool = false
 
     var cancellables = Set<AnyCancellable>()
 
@@ -27,7 +26,6 @@ class TeacherViewModel: ObservableObject {
             .contains(where: { $0.id == teacher.id })
 
     }
-
 
     func toggleFavorite() {
         guard let id = teacher.id else { return }

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ImageButton: View {
-    let imageName: String          // Name of the system image or asset
-    let title: String?             // Optional text label
-    let action: () -> Void         // Button action
+    let imageName: String
+    let title: String?
+    let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack {
-                Image(imageName) // You can change this to Image(imageName) for assets
+                Image(imageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 20, height: 20)
@@ -49,17 +49,12 @@ struct ReserveButtonView: View {
                     .frame(width: 20, height: 20)
 
                 Text(viewModel.isReserved ? "Reserved" : "Reserve")
-                    .font(.system(size: 10))
-                    .bold()
+                    .font(.headline)
             }
-            .padding(8)
-            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .background(viewModel.isReserved ? Color.orange : Color.clear)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(viewModel.isReserved ? Color.black : Color.white, lineWidth: 1)
-            )
+            .padding(10)
+            .foregroundColor(.white)
+            .background(viewModel.isReserved ? Color.orange : Color.blue)
             .cornerRadius(8)
         }
     }

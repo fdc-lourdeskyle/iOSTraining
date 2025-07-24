@@ -26,7 +26,6 @@ class TeacherListCell: UITableViewCell{
     @IBOutlet weak var teacherStatus: TeacherStatusIndicatorView!
 
 
-
     private var tags: [String] = []
     private var cancellables = Set<AnyCancellable>()
     private var viewModel: TeacherViewModel?
@@ -74,7 +73,6 @@ class TeacherListCell: UITableViewCell{
         tagsView.arrangedSubviews.forEach { $0.removeFromSuperview() } // Clean up
 
        
-
         if teacher.nativeSpeakerFlg == 1 {
             tagsView.addArrangedSubview(makeCapsuleTag("Native", backgroundColor: .systemGreen))
         }

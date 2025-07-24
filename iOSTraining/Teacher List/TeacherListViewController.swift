@@ -12,54 +12,40 @@ import SwiftUI
 
 class TeacherListViewController: UIViewController {
 
-    // MARK: - Properties
     private var teachers: [Teacher] = []
     private var avatarTeachers: [Teacher] = []
     private var allTeachers: [Teacher] = []
-    var teacherListVM: TeacherListViewModel!
-    private let cellIdentifier = "TeacherListCell"
-    private var selectedFilterButton: UIButton?
     var filteredTeachers: [Teacher] = []
+
+    var teacherListVM: TeacherListViewModel!
+
+    private var selectedFilterButton: UIButton?
     var isSearching = false
 
 
-    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var lessonsTabButton: UIButton!
     @IBOutlet weak var ncAIButton: UIButton!
     @IBOutlet weak var searchTeacher: UIImageView!
-    // Avatars
     @IBOutlet weak var avatarTeacherCollection: UICollectionView!
+
+    private let cellIdentifier = "TeacherListCell"
     private let avatarTeacherCellIdentifier = "AvatarTeacherCollectionCell"
 
-    //Filter Buttons
+    //Filter
     let filters = ["Rating", "Kids Rating", "Lesson Count", "Favorite Teachers"]
     var selectedIndex: Int?
     @IBOutlet weak var filterCollectionView: UICollectionView!
     private let filterCellIdentifier = "FilterCell"
 
 
-    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.dataSource = self
-        tableView.delegate = self
-
-        let nib = UINib(nibName: cellIdentifier , bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: cellIdentifier)
-
-        avatarTeacherCollection.dataSource = self
-        avatarTeacherCollection.delegate = self
-
-        let avatarNib = UINib(nibName: avatarTeacherCellIdentifier, bundle: nil)
-        avatarTeacherCollection
-            .register(avatarNib, forCellWithReuseIdentifier: avatarTeacherCellIdentifier)
-
-        filterCollectionView.dataSource = self
-        filterCollectionView.delegate = self
-
-        filterCollectionView.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.filterCellIdentifier)
+        setupTeacherTableView()
+        setupAvatarTeacherTableView()
+        setupFilterCollectionView()
 
         fetchTeachers()
         setupSegmentButtons()
@@ -69,6 +55,31 @@ class TeacherListViewController: UIViewController {
         searchTeacher.addGestureRecognizer(tapGesture)
 
     }
+
+    func setupTeacherTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+
+        let nib = UINib(nibName: cellIdentifier , bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellIdentifier)
+    }
+
+    func setupAvatarTeacherTableView() {
+        avatarTeacherCollection.dataSource = self
+        avatarTeacherCollection.delegate = self
+
+        let avatarNib = UINib(nibName: avatarTeacherCellIdentifier, bundle: nil)
+        avatarTeacherCollection
+            .register(avatarNib, forCellWithReuseIdentifier: avatarTeacherCellIdentifier)
+    }
+
+    func setupFilterCollectionView() {
+        filterCollectionView.dataSource = self
+        filterCollectionView.delegate = self
+
+        filterCollectionView.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.filterCellIdentifier)
+    }
+
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -82,7 +93,7 @@ class TeacherListViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        filterCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
+//        filterCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
     }
 
 
@@ -95,7 +106,7 @@ class TeacherListViewController: UIViewController {
                 self.allTeachers = result
                 self.avatarTeachers = result.filter { $0.countryName == "セルビア" }
 
-                self.teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
+//                self.teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
 
                 let teacherListVM = TeacherListViewModel(teachers: self.teachers)
                 self.teacherListVM = teacherListVM
@@ -117,10 +128,8 @@ class TeacherListViewController: UIViewController {
         lessonsTabButton.layoutIfNeeded()
         lessonsTabButton.applyBottomBorder(isSelected: true)
 
-
         ncAIButton.layoutIfNeeded()
         ncAIButton.applyBottomBorder(isSelected: false)
-
 
         lessonsTabButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
         ncAIButton.addTarget(self, action: #selector(segmentButtonTapped(_:)), for: .touchUpInside)
@@ -138,40 +147,6 @@ class TeacherListViewController: UIViewController {
         }
     }
 
-    @objc private func filterButtonTapped(_ selectedFilter: String) {
-        resetSearchAndReload()
-
-        teachers = allTeachers
-
-        switch selectedFilter {
-            case "Rating":
-                teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
-                print("Sorted by rating:", teachers.map { $0.rating ?? 0 })
-            case "Kids Rating":
-                teachers.sort { ($0.kidsRating ?? 0) > ($1.kidsRating ?? 0) }
-            case "Lesson Count":
-                teachers.sort { ($0.lessons ?? 0) > ($1.lessons ?? 0) }
-            case "Favorite Teachers":
-                 teachers = allTeachers.filter {
-                    UserDefaults.standard.isFavorite(id: $0.id ?? 0)
-                }
-
-                isSearching = false
-                tableView.reloadData()
-                return
-            default:
-                break
-        }
-
-        tableView.reloadData()
-    }
-
-    func resetSearchAndReload() {
-        isSearching = false
-        filteredTeachers.removeAll()
-        tableView.reloadData()
-    }
-
     @objc func promptSearch() {
         let alert = UIAlertController(
             title: "Search Teacher",
@@ -184,7 +159,8 @@ class TeacherListViewController: UIViewController {
 
         let searchAction = UIAlertAction(title: "Search", style: .default) { _ in
             let keyword = alert.textFields?.first?.text ?? ""
-            self.searchTeachers(keyword: keyword)
+            self.teacherListVM.searchTeachers(keyword: keyword)
+            self.tableView.reloadData()
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -195,17 +171,6 @@ class TeacherListViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    func searchTeachers(keyword: String) {
-        if keyword.trimmingCharacters(in: .whitespaces).isEmpty {
-            isSearching = false
-        } else {
-            isSearching = true
-            filteredTeachers = teachers.filter {
-                $0.nameEng?.localizedCaseInsensitiveContains(keyword) ?? false
-            }
-        }
-        tableView.reloadData()
-        }
 }
 
 
@@ -253,7 +218,8 @@ extension TeacherListViewController: UICollectionViewDataSource {
             selectedIndex = indexPath.item
             let selectedFilter = filters[indexPath.item]
 
-            filterButtonTapped(selectedFilter)
+            teacherListVM.filter(by: selectedFilter)
+            tableView.reloadData()
 
         } else if collectionView == avatarTeacherCollection {
             let selectedTeacher = avatarTeachers[indexPath.item]
@@ -270,7 +236,6 @@ extension TeacherListViewController: UICollectionViewDataSource {
         }
     }
 }
-
 
 
     extension TeacherListViewController: UICollectionViewDelegateFlowLayout {
@@ -311,16 +276,20 @@ extension TeacherListViewController: UICollectionViewDataSource {
         }
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return isSearching ? filteredTeachers.count : teachers.count
+
+            return teacherListVM?.filteredTeachers.count ?? 0
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-            let teacher = isSearching ? filteredTeachers[indexPath.row] : teachers[indexPath.row]
+
+            guard let teacherListVM = teacherListVM else {
+                return UITableViewCell()
+            }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TeacherListCell
 
-            let viewModel = TeacherViewModel(teacher: teacher)
+            let viewModel = teacherListVM.filteredTeachers[indexPath.row]
             cell.configure(with: viewModel)
 
             return cell
@@ -339,9 +308,10 @@ extension TeacherListViewController: UICollectionViewDataSource {
         ){
             let selectedTeacher = teachers[indexPath.row]
             let allTeachers = teachers
-            let teacherListViewModel = TeacherListViewModel(teachers: allTeachers)
 
+            let teacherListViewModel = TeacherListViewModel(teachers: allTeachers)
             let teacherViewModel = TeacherViewModel(teacher: selectedTeacher)
+
             let swiftUIView = TeacherDetailsSwiftUIView(viewModel: teacherViewModel).environmentObject(teacherListVM!)
             let hostingController = UIHostingController(rootView: swiftUIView)
             self.navigationController?.pushViewController(hostingController, animated: true)

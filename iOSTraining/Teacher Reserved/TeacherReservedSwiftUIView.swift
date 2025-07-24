@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TeacherReservedSwiftUIView: View {
-    let reservedTeachers: [Teacher]
-    let totalReservedCoin: Int
+    @ObservedObject var viewModel: ReservedTeacherListViewModel
 
     var body: some View {
         VStack(spacing: 4){
@@ -18,33 +17,41 @@ struct TeacherReservedSwiftUIView: View {
                     .font(.headline)
                     .fontWeight(.semibold)
             }
-            HStack{
+
+            HStack {
                 Text("Total")
                     .font(.subheadline)
-                IconWithTextView(
-                    systemImageName: "coin",
-                    label: ": "+"\(totalReservedCoin)"
-                )
+                IconWithTextView(systemImageName: "coin", label: ": \(viewModel.totalReservedCoin)")
             }
 
-            List(reservedTeachers, id: \.id) { teacher in
-                HStack{
-                    AsyncImage(url: URL(string: teacher.imageMain ?? "")) { image in
-                        image .resizable()
+            List(viewModel.reservedTeacherViewModels, id: \.teacher.id) { teacherVM in
+                HStack {
+                    AsyncImage(url: URL(string: teacherVM.teacher.imageMain ?? "")) { image in
+                        image.resizable()
                             .scaledToFill()
                             .frame(width: 80, height: 80)
                     } placeholder: {
                         Color.gray
                     }
+
                     VStack(alignment: .leading) {
-                        Text(teacher.nameEng ?? "Unknown")
-                        IconWithTextView(systemImageName: "coin", label: "\(teacher.teacherReserveCoin ?? 0)")
+                        Text(teacherVM.teacher.nameEng ?? "Unknown")
+                        IconWithTextView(systemImageName: "coin", label: "\(teacherVM.teacher.teacherReserveCoin ?? 0)")
+
+//                        ReserveButtonView(viewModel: teacherVM)
+//                            .onChange(of: teacherVM.isReserved) { _ in
+//                                viewModel.refresh()
+//                        }
                     }
                 }
             }
         }
+        .onAppear {
+            viewModel.refresh()
+        }
     }
 }
+
 
 //#Preview {
 //    TeacherReservedSwiftUIView()
