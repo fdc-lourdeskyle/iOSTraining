@@ -17,9 +17,15 @@ class TeacherListViewModel: ObservableObject {
         self.teachers = teachers.map { TeacherViewModel(teacher: $0) }
     }
 
+//    func refreshFavorites() {
+//        teachers.forEach { $0.refreshFavoriteStatus() }
+//    }
+    
     func refreshFavorites() {
+        let favoriteIDs = UserDefaults.standard.favoriteTeacherIDs()
+
         for vm in teachers {
-            vm.teacher.isFavorite = UserDefaults.standard.isFavorite(id: vm.teacher.id ?? 0)
+            vm.teacher.isFavorite = favoriteIDs.contains(vm.teacher.id ?? 0)
         }
     }
 

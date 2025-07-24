@@ -11,20 +11,38 @@ import UIKit
 
 class TeacherViewModel: ObservableObject {
     @Published var teacher: Teacher
-    @Published var isFavorite: Bool = false
+    @Published var isReserved: Bool = false
+    //@Published var isFavorite: Bool = false
 
     var cancellables = Set<AnyCancellable>()
 
-    init(teacher: Teacher) {
-        self.teacher = teacher
-        self.teacher.isFavorite = UserDefaults.standard
-            .isFavorite(id: teacher.id ?? 0)
+    var isFavorite: Bool {
+        UserDefaults.standard.isFavorite(id: teacher.id ?? 0)
     }
 
+    init(teacher: Teacher) {
+        self.teacher = teacher
+        self.isReserved = ReservedTeacherManager.shared
+            .getReservedTeachers()
+            .contains(where: { $0.id == teacher.id })
+
+    }
+
+
     func toggleFavorite() {
-        UserDefaults.standard.toggleFavorite(id: teacher.id ?? 0)
+        guard let id = teacher.id else { return }
+
         teacher.isFavorite.toggle()
-        print("heart tapped")
+
+        if teacher.isFavorite {
+            UserDefaults.standard.addFavorite(id: id)
+        } else {
+            UserDefaults.standard.removeFavorite(id: id)
+        }
+    }
+
+    func refreshFavoriteStatus() {
+        objectWillChange.send()
     }
 
     func reserveTeacher() {
@@ -38,14 +56,15 @@ class TeacherViewModel: ObservableObject {
         }
 
         ReservedTeacherManager.shared.save(reserved)
+        isReserved = reserved.contains(where: { $0.id == teacher.id })
     }
 
     var favoriteImageName: String {
-        return teacher.isFavorite ? "heart.fill" : "heart"
+        isFavorite ? "heart.fill" : "heart"
     }
 
     var favoriteTintColor: UIColor {
-        return teacher.isFavorite ? .systemOrange : .white
+        isFavorite ? .systemOrange : .white
     }
 
     var favoriteCountText: String {

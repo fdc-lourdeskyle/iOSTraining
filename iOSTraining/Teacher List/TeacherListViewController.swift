@@ -14,22 +14,29 @@ class TeacherListViewController: UIViewController {
 
     // MARK: - Properties
     private var teachers: [Teacher] = []
-    var avatarTeachers: [Teacher] = []
+    private var avatarTeachers: [Teacher] = []
+    private var allTeachers: [Teacher] = []
     var teacherListVM: TeacherListViewModel!
     private let cellIdentifier = "TeacherListCell"
     private var selectedFilterButton: UIButton?
+    var filteredTeachers: [Teacher] = []
+    var isSearching = false
 
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var filterScrollView: UIScrollView!
-    @IBOutlet weak var filterStackView: UIStackView!
     @IBOutlet weak var lessonsTabButton: UIButton!
     @IBOutlet weak var ncAIButton: UIButton!
-
+    @IBOutlet weak var searchTeacher: UIImageView!
     // Avatars
     @IBOutlet weak var avatarTeacherCollection: UICollectionView!
     private let avatarTeacherCellIdentifier = "AvatarTeacherCollectionCell"
+
+    //Filter Buttons
+    let filters = ["Rating", "Kids Rating", "Lesson Count", "Favorite Teachers"]
+    var selectedIndex: Int?
+    @IBOutlet weak var filterCollectionView: UICollectionView!
+    private let filterCellIdentifier = "FilterCell"
 
 
     // MARK: - Lifecycle
@@ -49,9 +56,17 @@ class TeacherListViewController: UIViewController {
         avatarTeacherCollection
             .register(avatarNib, forCellWithReuseIdentifier: avatarTeacherCellIdentifier)
 
+        filterCollectionView.dataSource = self
+        filterCollectionView.delegate = self
+
+        filterCollectionView.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.filterCellIdentifier)
+
         fetchTeachers()
         setupSegmentButtons()
-        setupFilters()
+
+        searchTeacher.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(promptSearch))
+        searchTeacher.addGestureRecognizer(tapGesture)
 
     }
 
@@ -64,13 +79,20 @@ class TeacherListViewController: UIViewController {
         tableView.reloadData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        filterCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: [])
+    }
+
+
     func fetchTeachers(){
         NetworkManager.shared.getTeachers { [weak self] (result: [Teacher]?) in
             guard let self = self, let result = result else { return }
 
-
             DispatchQueue.main.async {
                 self.teachers = result
+                self.allTeachers = result
                 self.avatarTeachers = result.filter { $0.countryName == "セルビア" }
 
                 self.teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
@@ -87,7 +109,6 @@ class TeacherListViewController: UIViewController {
     }
 
     func setupSegmentButtons() {
-
         [lessonsTabButton, ncAIButton].forEach { button in
             button?.setTitleColor(.systemOrange, for: .normal)
             button?.backgroundColor = .clear
@@ -106,11 +127,9 @@ class TeacherListViewController: UIViewController {
     }
 
     @objc func segmentButtonTapped(_ sender: UIButton) {
-        // Reset borders
         lessonsTabButton.applyBottomBorder(isSelected: false)
         ncAIButton.applyBottomBorder(isSelected: false)
 
-        // Apply border to selected
         sender.layoutIfNeeded()
         sender.applyBottomBorder(isSelected: true)
 
@@ -119,73 +138,12 @@ class TeacherListViewController: UIViewController {
         }
     }
 
-    func setupFilters(){
+    @objc private func filterButtonTapped(_ selectedFilter: String) {
+        resetSearchAndReload()
 
-        filterStackView.axis = .horizontal
-        filterStackView.spacing = 4
-        filterScrollView.addSubview(filterStackView)
+        teachers = allTeachers
 
-        filterStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterStackView.topAnchor.constraint(equalTo: filterScrollView.topAnchor),
-            filterStackView.bottomAnchor.constraint(equalTo: filterScrollView.bottomAnchor),
-            filterStackView.leadingAnchor.constraint(equalTo: filterScrollView.leadingAnchor),
-            filterStackView.trailingAnchor.constraint(equalTo: filterScrollView.trailingAnchor),
-            filterStackView.heightAnchor.constraint(equalTo: filterScrollView.heightAnchor)
-        ])
-
-        let filters = ["Rating", "Kids Rating", "Lesson Count", "Reservation List"]
-
-        for title in filters {
-            let button = UIButton(type: .system)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor
-                .constraint(greaterThanOrEqualToConstant: 40).isActive = true
-
-            var config = UIButton.Configuration.plain()
-            config.title = title
-            config.background.backgroundColor = .clear
-            config.baseForegroundColor = .white
-            config.cornerStyle = .capsule
-            config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
-            button.configuration = config
-
-            button.addTarget(self, action: #selector(filterButtonTapped(_:)), for: .touchUpInside)
-
-            button.configurationUpdateHandler = { button in
-                var updatedConfig = button.configuration
-
-                if button.isSelected{
-                    updatedConfig?.background.backgroundColor = .white
-                    updatedConfig?.baseForegroundColor = .black
-                }else{
-                    updatedConfig?.background.backgroundColor = .clear
-                    updatedConfig?.baseForegroundColor = .white
-                }
-
-                button.configuration = updatedConfig
-            }
-
-            filterStackView.addArrangedSubview(button)
-
-            if title == "Rating" {
-                button.isSelected = true
-                selectedFilterButton = button
-            }
-        }
-    }
-
-    @objc private func filterButtonTapped(_ sender: UIButton) {
-        let title = sender.configuration?.title ?? ""
-        print("Tapped:", title)
-
-        if selectedFilterButton != sender {
-            selectedFilterButton?.isSelected = false
-            sender.isSelected = true
-            selectedFilterButton = sender
-        }
-
-        switch title {
+        switch selectedFilter {
             case "Rating":
                 teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
                 print("Sorted by rating:", teachers.map { $0.rating ?? 0 })
@@ -193,39 +151,90 @@ class TeacherListViewController: UIViewController {
                 teachers.sort { ($0.kidsRating ?? 0) > ($1.kidsRating ?? 0) }
             case "Lesson Count":
                 teachers.sort { ($0.lessons ?? 0) > ($1.lessons ?? 0) }
-            case "Reservation List":
-                openReservationList()
+            case "Favorite Teachers":
+                 teachers = allTeachers.filter {
+                    UserDefaults.standard.isFavorite(id: $0.id ?? 0)
+                }
+
+                isSearching = false
+                tableView.reloadData()
                 return
             default:
                 break
         }
 
         tableView.reloadData()
-        print("Table reloaded")
     }
 
-    func openReservationList() {
-        let reservedTeachers = ReservedTeacherManager.shared.getReservedTeachers()
-        let totalCoins = ReservedTeacherManager.shared.getTotalReservedCoin()
+    func resetSearchAndReload() {
+        isSearching = false
+        filteredTeachers.removeAll()
+        tableView.reloadData()
+    }
 
-        let reservationList = TeacherReservedSwiftUIView(
-            reservedTeachers: reservedTeachers,
-            totalReservedCoin: totalCoins
+    @objc func promptSearch() {
+        let alert = UIAlertController(
+            title: "Search Teacher",
+            message: nil,
+            preferredStyle: .alert
         )
-
-        let hostingController = UIHostingController(rootView: reservationList)
-        navigationController?.pushViewController(hostingController, animated: true)
-    }
-
-}
-
-    extension TeacherListViewController: UICollectionViewDataSource{
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return avatarTeachers.count
+        alert.addTextField{
+            textField in textField.placeholder = "Enter teacher name"
         }
 
+        let searchAction = UIAlertAction(title: "Search", style: .default) { _ in
+            let keyword = alert.textFields?.first?.text ?? ""
+            self.searchTeachers(keyword: keyword)
+        }
 
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alert.addAction(searchAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+
+    func searchTeachers(keyword: String) {
+        if keyword.trimmingCharacters(in: .whitespaces).isEmpty {
+            isSearching = false
+        } else {
+            isSearching = true
+            filteredTeachers = teachers.filter {
+                $0.nameEng?.localizedCaseInsensitiveContains(keyword) ?? false
+            }
+        }
+        tableView.reloadData()
+        }
+}
+
+
+extension TeacherListViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == filterCollectionView {
+            return filters.count
+        } else if collectionView == avatarTeacherCollection {
+            return avatarTeachers.count
+        }
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        if collectionView == filterCollectionView {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: filterCellIdentifier,
+                for: indexPath
+            ) as! FilterCell
+
+            let filter = filters[indexPath.item]
+
+            cell.configure(with: filter)
+
+            return cell
+
+        } else if collectionView == avatarTeacherCollection {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: avatarTeacherCellIdentifier,
                 for: indexPath
@@ -233,11 +242,20 @@ class TeacherListViewController: UIViewController {
 
             let avatarTeacher = avatarTeachers[indexPath.item]
             cell.configureCell(avatarTeacher)
-
             return cell
         }
 
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+        fatalError("Unknown collection view")
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == filterCollectionView {
+            selectedIndex = indexPath.item
+            let selectedFilter = filters[indexPath.item]
+
+            filterButtonTapped(selectedFilter)
+
+        } else if collectionView == avatarTeacherCollection {
             let selectedTeacher = avatarTeachers[indexPath.item]
             let allTeachers = avatarTeachers
 
@@ -250,31 +268,42 @@ class TeacherListViewController: UIViewController {
             let hostingController = UIHostingController(rootView: swiftUIView)
             self.navigationController?.pushViewController(hostingController, animated: true)
         }
-
     }
+}
 
 
-    extension TeacherListViewController: UICollectionViewDelegateFlowLayout{
 
+    extension TeacherListViewController: UICollectionViewDelegateFlowLayout {
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return CGSize(width: 120, height: 190)
 
+            if collectionView == filterCollectionView {
+                return CGSize(width: 160, height: 32)
+            } else if collectionView == avatarTeacherCollection {
+                return CGSize(width: 120, height: 190)
+            }
+
+            return .zero
         }
 
-        // Left & right padding
         func collectionView(_ collectionView: UICollectionView,
                             layout collectionViewLayout: UICollectionViewLayout,
                             insetForSectionAt section: Int) -> UIEdgeInsets {
             return UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
         }
 
-        // Spacing between cells
         func collectionView(_ collectionView: UICollectionView,
                             layout collectionViewLayout: UICollectionViewLayout,
                             minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
             return 8
         }
+
+        func collectionView(_ collectionView: UICollectionView,
+                            layout collectionViewLayout: UICollectionViewLayout,
+                            minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 8
+        }
     }
+
 
     extension TeacherListViewController: UITableViewDataSource {
         func numberOfSections(in tableView: UITableView) -> Int {
@@ -282,16 +311,15 @@ class TeacherListViewController: UIViewController {
         }
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return teachers.count
+            return isSearching ? filteredTeachers.count : teachers.count
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: cellIdentifier,
-                for: indexPath
-            ) as! TeacherListCell
 
-            let teacher = teachers[indexPath.row]
+            let teacher = isSearching ? filteredTeachers[indexPath.row] : teachers[indexPath.row]
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TeacherListCell
+
             let viewModel = TeacherViewModel(teacher: teacher)
             cell.configure(with: viewModel)
 
@@ -299,7 +327,7 @@ class TeacherListViewController: UIViewController {
         }
 
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 120
+            return 140
         }
     }
 
@@ -320,3 +348,5 @@ class TeacherListViewController: UIViewController {
 
         }
     }
+
+

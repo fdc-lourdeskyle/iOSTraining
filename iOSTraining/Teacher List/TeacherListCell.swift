@@ -23,14 +23,8 @@ class TeacherListCell: UITableViewCell{
     @IBOutlet weak var tagsView: UIStackView!
     @IBOutlet weak var favoriteButton: UIImageView!
     @IBOutlet weak var favoriteCount: UILabel!
-    @IBOutlet weak var reserveButton: UIButton!
     @IBOutlet weak var teacherStatus: TeacherStatusIndicatorView!
 
-    @IBAction func reserveButtonTapped(_ sender: UIButton) {
-        print("reserve button tapped")
-        viewModel?.reserveTeacher()
-        configureReserveButton()
-    }
 
 
     private var tags: [String] = []
@@ -45,13 +39,6 @@ class TeacherListCell: UITableViewCell{
         favoriteButton.isUserInteractionEnabled = true
         favoriteButton.addGestureRecognizer(tapGesture)
 
-        viewModel?.$isFavorite
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.updateFavoriteUI()
-            }
-            .store(in: &cancellables)
-
         updateFavoriteUI()
 
     }
@@ -62,10 +49,6 @@ class TeacherListCell: UITableViewCell{
         cancellables.removeAll() // prevent repeated updates
     }
 
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        self.accessoryType = .disclosureIndicator
-//    }
 
     func configure(with viewModel: TeacherViewModel) {
         self.viewModel = viewModel
@@ -142,14 +125,13 @@ class TeacherListCell: UITableViewCell{
         config.background.strokeColor = isReserved ? .black : .white
         config.background.strokeWidth = 1
 
-        reserveButton.configuration = config
-        reserveButton.layer.cornerRadius = 8
-        reserveButton.clipsToBounds = true
     }
 
 
     @objc private func favoriteTapped() {
         viewModel?.toggleFavorite()
+        viewModel?.refreshFavoriteStatus()
+        updateFavoriteUI()
     }
 
     private func updateFavoriteUI() {
@@ -164,7 +146,7 @@ class TeacherListCell: UITableViewCell{
         let label = UILabel()
         label.text = text
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 8, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.backgroundColor = backgroundColor
         label.textAlignment = .center
         label.layer.cornerRadius = 10

@@ -20,7 +20,7 @@ struct TeacherDetailsSwiftUIView: View {
         )
 
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 25) {
                 HeaderView(
                     imageURL: viewModel.teacher.imageMain ?? "",
                     name: viewModel.teacher.nameEng ?? "Unknown",
@@ -29,7 +29,7 @@ struct TeacherDetailsSwiftUIView: View {
                 )
 
                 TeacherDetailView(viewModel: viewModel)
-                LessonButtonSection()
+                LessonButtonSection(viewModel: viewModel)
                 StudentActions(viewModel: viewModel)
                 DetailTabSelector(viewModel: viewModel)
 
@@ -96,6 +96,7 @@ struct TeacherDetailView: View {
             AsyncImage(url: URL(string: viewModel.teacher.imageMain ?? "")) { image in
                     image .resizable()
                     .scaledToFill()
+                    .frame(width: 140 , height: 180)
             } placeholder: {
                 Color.gray
             }
@@ -126,6 +127,7 @@ struct DetailsSection: View {
 }
 
 struct LessonButtonSection: View {
+    @ObservedObject var viewModel: TeacherViewModel
 
     var body: some View {
         VStack{
@@ -134,8 +136,12 @@ struct LessonButtonSection: View {
                 print("Button tapped")
             }
 
-            ImageButton(imageName: "calendar 1", title: "Booked Lesson") {
+            ImageButton(imageName: "online-lesson", title: "Booked Lesson") {
                 print("Delete tapped")
+            }
+
+            ImageButton(imageName: "calendar 1", title: "Reserve Teacher") {
+                viewModel.reserveTeacher()
             }
 
         }.frame(maxWidth: .infinity)
@@ -150,12 +156,12 @@ struct StudentActions: View {
 
         HStack(spacing: 30){
             IconAboveLabelView(
-                imageName: viewModel.teacher.isFavorite ? "heart.fill" : "heart",
+                imageName: viewModel.isFavorite ? "heart.fill" : "heart",
                 label: "Favorite",
                 useSystemImage: true,
                 iconSize: 22,
                 spacing: 8,
-                foregroundColor: viewModel.teacher.isFavorite ? Color.orange : Color.white,
+                foregroundColor: viewModel.isFavorite ? Color.orange : Color.white,
                 onTap: {
                     viewModel.toggleFavorite()
                 }

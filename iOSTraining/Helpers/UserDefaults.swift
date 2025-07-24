@@ -8,29 +8,30 @@
 import Foundation
 
 extension UserDefaults{
-    private static let favoriteKey = "FavoriteTeacherIDs"
-
-    var favoriteTeacherIDs: [Int] {
-        get {
-            return array(forKey: Self.favoriteKey) as? [Int] ?? []
-        }
-        set {
-            set(newValue, forKey: Self.favoriteKey)
-        }
-    }
+    private var favoritesKey: String { "favoriteTeacherIDs" }
 
     func isFavorite(id: Int) -> Bool {
-        favoriteTeacherIDs.contains(id)
+        let ids = favoriteTeacherIDs()
+        return ids.contains(id)
     }
 
-    func toggleFavorite(id: Int) {
-        var current = favoriteTeacherIDs
-        if let index = current.firstIndex(of: id){
-            current.remove(at: index)
-        } else {
-            current.append(id)
+    func addFavorite(id: Int) {
+        var ids = favoriteTeacherIDs()
+        if !ids.contains(id) {
+            ids.append(id)
+            set(ids, forKey: favoritesKey)
         }
-        favoriteTeacherIDs = current
     }
 
+    func removeFavorite(id: Int) {
+        var ids = favoriteTeacherIDs()
+        if let index = ids.firstIndex(of: id) {
+            ids.remove(at: index)
+            set(ids, forKey: favoritesKey)
+        }
+    }
+
+    func favoriteTeacherIDs() -> [Int] {
+        return array(forKey: favoritesKey) as? [Int] ?? []
+    }
 }

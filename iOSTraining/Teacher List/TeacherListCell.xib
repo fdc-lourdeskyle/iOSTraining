@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -222,36 +223,23 @@
                                 <rect key="frame" x="205" y="0.0" width="145" height="150"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="EUP-9C-NZu">
-                                        <rect key="frame" x="4" y="32" width="20.666666666666668" height="17.333333333333336"/>
+                                        <rect key="frame" x="62.333333333333307" y="31.666666666666668" width="20.666666666666664" height="17.333333333333332"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfK-mE-Fc8">
-                                        <rect key="frame" x="7.9999999999999991" y="50.333333333333336" width="12.666666666666664" height="15.666666666666664"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="11" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfK-mE-Fc8">
+                                        <rect key="frame" x="60" y="52" width="25" height="14.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" name="White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j48-7P-MnF">
-                                        <rect key="frame" x="29.666666666666693" y="26" width="69.666666666666686" height="28.333333333333329"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Reserve">
-                                            <fontDescription key="titleFontDescription" type="system" pointSize="12"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="reserveButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="04w-6h-NAi"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="centerX" secondItem="EUP-9C-NZu" secondAttribute="centerX" id="C4e-q5-GOx"/>
-                                    <constraint firstItem="EUP-9C-NZu" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="4" id="IHf-MY-nIl"/>
-                                    <constraint firstItem="EUP-9C-NZu" firstAttribute="top" secondItem="FPL-Rb-3a0" secondAttribute="top" constant="30" id="JV6-Lz-0oh"/>
-                                    <constraint firstItem="j48-7P-MnF" firstAttribute="centerY" secondItem="EUP-9C-NZu" secondAttribute="centerY" id="NM0-nl-lcN"/>
-                                    <constraint firstAttribute="bottom" secondItem="zfK-mE-Fc8" secondAttribute="bottom" constant="84" id="RBS-5A-9mY"/>
-                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="8" id="U96-fF-Sjq"/>
-                                    <constraint firstItem="j48-7P-MnF" firstAttribute="leading" secondItem="EUP-9C-NZu" secondAttribute="trailing" constant="5" id="lMh-Vc-UVe"/>
-                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="top" secondItem="EUP-9C-NZu" secondAttribute="bottom" id="y14-j0-bug"/>
-                                    <constraint firstItem="j48-7P-MnF" firstAttribute="top" secondItem="FPL-Rb-3a0" secondAttribute="top" constant="26" id="yp3-x9-3lm"/>
+                                    <constraint firstItem="EUP-9C-NZu" firstAttribute="centerX" secondItem="FPL-Rb-3a0" secondAttribute="centerX" id="74Y-5X-Gdl"/>
+                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="top" secondItem="EUP-9C-NZu" secondAttribute="bottom" constant="2" id="9eq-n4-Q8H"/>
+                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="leading" secondItem="FPL-Rb-3a0" secondAttribute="leading" constant="60" id="DLx-iT-ID5"/>
+                                    <constraint firstAttribute="bottom" secondItem="zfK-mE-Fc8" secondAttribute="bottom" constant="83.670000000000002" id="GaH-gu-elm"/>
+                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="centerX" secondItem="EUP-9C-NZu" secondAttribute="centerX" id="Itz-OE-r3O"/>
+                                    <constraint firstItem="zfK-mE-Fc8" firstAttribute="top" secondItem="EUP-9C-NZu" secondAttribute="bottom" constant="2" id="TCw-hI-0TO"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -278,7 +266,6 @@
             <connections>
                 <outlet property="favoriteButton" destination="EUP-9C-NZu" id="e1l-b3-H10"/>
                 <outlet property="favoriteCount" destination="zfK-mE-Fc8" id="AmX-Da-N1d"/>
-                <outlet property="reserveButton" destination="j48-7P-MnF" id="Ya8-oM-dma"/>
                 <outlet property="tagsView" destination="RdX-Vf-xon" id="pws-ze-DdB"/>
                 <outlet property="teacherAddress" destination="Gpg-iq-ugA" id="EmY-uk-rE1"/>
                 <outlet property="teacherAddressLabel" destination="ipk-5K-Pnp" id="Ifi-Uq-AKU"/>
@@ -300,6 +287,9 @@
         <image name="coin" width="512" height="512"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="star" width="512" height="512"/>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

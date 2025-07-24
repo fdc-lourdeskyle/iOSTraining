@@ -42,7 +42,7 @@ struct Teacher: Identifiable, Codable {
 
     //my local
     var isFavorite: Bool = false
-    var localFavoriteCount: Int?
+    //var localFavoriteCount: Int?
 
     enum CodingKeys: String, CodingKey {
         case id

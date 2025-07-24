@@ -33,3 +33,34 @@ struct ImageButton: View {
         }
     }
 }
+
+struct ReserveButtonView: View {
+    @ObservedObject var viewModel: TeacherViewModel
+
+    var body: some View {
+        Button(action: {
+            print("Reserve tapped")
+            viewModel.reserveTeacher()
+        }) {
+            HStack {
+                Image("calendar 1")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+
+                Text(viewModel.isReserved ? "Reserved" : "Reserve")
+                    .font(.system(size: 10))
+                    .bold()
+            }
+            .padding(8)
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .background(viewModel.isReserved ? Color.orange : Color.clear)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(viewModel.isReserved ? Color.black : Color.white, lineWidth: 1)
+            )
+            .cornerRadius(8)
+        }
+    }
+}
