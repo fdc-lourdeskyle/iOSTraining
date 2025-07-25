@@ -13,8 +13,6 @@ class TeacherViewModel: ObservableObject {
     @Published var teacher: Teacher
     @Published var isReserved: Bool = false
 
-    var cancellables = Set<AnyCancellable>()
-
     var isFavorite: Bool {
         UserDefaults.standard.isFavorite(id: teacher.id ?? 0)
     }
@@ -24,18 +22,23 @@ class TeacherViewModel: ObservableObject {
         self.isReserved = ReservedTeacherManager.shared
             .getReservedTeachers()
             .contains(where: { $0.id == teacher.id })
-
     }
 
     func toggleFavorite() {
         guard let id = teacher.id else { return }
 
-        teacher.isFavorite.toggle()
-
         if teacher.isFavorite {
-            UserDefaults.standard.addFavorite(id: id)
-        } else {
+            teacher.isFavorite.toggle()
             UserDefaults.standard.removeFavorite(id: id)
+
+            if let currentCount = teacher.favoriteCount, currentCount > 0 {
+                teacher.favoriteCount = currentCount - 1
+            }
+        } else {
+            teacher.isFavorite.toggle()
+            UserDefaults.standard.addFavorite(id: id)
+
+            teacher.favoriteCount = (teacher.favoriteCount ?? 0) + 1
         }
     }
 

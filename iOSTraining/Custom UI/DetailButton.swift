@@ -26,7 +26,7 @@ struct ImageButton: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(10)
+            .padding(8)
             .foregroundColor(.white)
             .background(Color.blue)
             .cornerRadius(10)
@@ -52,7 +52,7 @@ struct ReserveButtonView: View {
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
-            .padding(10)
+            .padding(8)
             .foregroundColor(.white)
             .background(viewModel.isReserved ? Color.orange : Color.blue)
             .cornerRadius(8)

@@ -42,12 +42,10 @@ class TeacherListCell: UITableViewCell{
 
     }
 
-
     override func prepareForReuse() {
         super.prepareForReuse()
         cancellables.removeAll() // prevent repeated updates
     }
-
 
     func configure(with viewModel: TeacherViewModel) {
         self.viewModel = viewModel
@@ -70,14 +68,14 @@ class TeacherListCell: UITableViewCell{
             teacherCountryFlag.kf.setImage(with: urlCountry, placeholder: UIImage(named: "placeholder"))
         }
 
+
         tagsView.arrangedSubviews.forEach { $0.removeFromSuperview() } // Clean up
 
-       
         if teacher.nativeSpeakerFlg == 1 {
             tagsView.addArrangedSubview(makeCapsuleTag("Native", backgroundColor: .systemGreen))
         }
         if teacher.suitableForChildrenFlg == 1 {
-            tagsView.addArrangedSubview(makeCapsuleTag("Kids OK", backgroundColor: .systemBlue))
+            tagsView.addArrangedSubview(makeCapsuleTag("For Kids", backgroundColor: .systemBlue))
         }
         if teacher.callanDiscountFlg == true {
             tagsView.addArrangedSubview(makeCapsuleTag("Callan", backgroundColor: .systemOrange))
@@ -100,31 +98,8 @@ class TeacherListCell: UITableViewCell{
             .store(in: &cancellables)
 
         updateFavoriteUI()
-        configureReserveButton()
-    }
-
-    private func configureReserveButton(){
-        guard let viewModel = viewModel else { return }
-
-        let isReserved = ReservedTeacherManager.shared
-            .getReservedTeachers()
-            .contains(where: { $0.id == viewModel.teacher.id})
-
-        var config = UIButton.Configuration.filled()
-        config.title = isReserved ? "Reserved" : "Reserve"
-        config.baseBackgroundColor = isReserved ? .systemOrange : .clear
-        config.baseForegroundColor = .white
-        config.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6)
-
-        var textAttr = AttributedString(config.title ?? "")
-        textAttr.font = .systemFont(ofSize: 10)
-        config.attributedTitle = textAttr
-
-        config.background.strokeColor = isReserved ? .black : .white
-        config.background.strokeWidth = 1
 
     }
-
 
     @objc private func favoriteTapped() {
         viewModel?.toggleFavorite()

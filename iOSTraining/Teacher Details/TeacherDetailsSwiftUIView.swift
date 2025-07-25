@@ -108,7 +108,7 @@ struct TeacherDetailView: View {
 }
 
 struct DetailsSection: View {
-    let viewModel: TeacherViewModel
+    @ObservedObject var viewModel: TeacherViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -120,7 +120,7 @@ struct DetailsSection: View {
             IconWithTextView(systemImageName: "star", label: "\(viewModel.teacher.rating ?? 0.0)")
             IconWithTextView(systemImageName: "children", label: "\(viewModel.teacher.kidsRating ?? 0.0)")
             IconWithTextView(systemImageName: "analysis", label: "\(viewModel.teacher.lessons ?? 0) lessons")
-            IconWithTextView(systemImageName: "heart", label: "\(viewModel.teacher.favoriteCount ?? 0) favorites")
+            IconWithTextView(systemImageName: "heart", label: "\(viewModel.favoriteCountText) favorites")
             IconWithTextView(systemImageName: "hand", label: "11-11-2025")
         }.padding()
     }

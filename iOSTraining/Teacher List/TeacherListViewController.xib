@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SvX-ci-Ux0">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                    <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="90p-fD-r5X">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="850"/>
@@ -37,10 +37,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O1h-30-DPM">
-                                                    <rect key="frame" x="0.0" y="34" width="400" height="34.333333333333343"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="68.333333333333329"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7RT-Du-nSh">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="34.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="68.333333333333329"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="200" id="7R5-UR-d0X"/>
                                                             </constraints>
@@ -49,7 +49,7 @@
                                                             <buttonConfiguration key="configuration" style="plain" title="Lessons"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9w-IT-nn0">
-                                                            <rect key="frame" x="200" y="0.0" width="200" height="34.333333333333336"/>
+                                                            <rect key="frame" x="200" y="0.0" width="200" height="68.333333333333329"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="200" id="g0p-Z9-63k"/>
                                                             </constraints>
@@ -66,7 +66,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="196.66666666666666" height="50"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repeat" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lD6-d1-P9d">
-                                                                    <rect key="frame" x="8" y="11.999999999999995" width="30" height="26.666666666666671"/>
+                                                                    <rect key="frame" x="8" y="12.000000000000009" width="30" height="26.666666666666671"/>
                                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="30" id="Gpi-DH-730"/>
@@ -145,6 +145,7 @@
                                             <constraints>
                                                 <constraint firstItem="l0b-Fp-Ufz" firstAttribute="leading" secondItem="u0m-QO-o4v" secondAttribute="leading" id="47Q-Kl-LNc"/>
                                                 <constraint firstItem="XiB-PI-piS" firstAttribute="leading" secondItem="u0m-QO-o4v" secondAttribute="leading" id="5jG-VS-Iz1"/>
+                                                <constraint firstItem="O1h-30-DPM" firstAttribute="top" secondItem="u0m-QO-o4v" secondAttribute="top" id="NTF-nk-xHP"/>
                                                 <constraint firstAttribute="bottom" secondItem="l0b-Fp-Ufz" secondAttribute="bottom" constant="8" id="Q73-cc-5av"/>
                                                 <constraint firstItem="l0b-Fp-Ufz" firstAttribute="top" secondItem="XiB-PI-piS" secondAttribute="bottom" id="SZ2-gY-rBP"/>
                                                 <constraint firstAttribute="height" constant="200" id="UVh-rb-6RQ"/>
@@ -221,9 +222,9 @@
             <viewLayoutGuide key="safeArea" id="GHR-oH-UvD"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="SvX-ci-Ux0" firstAttribute="top" secondItem="xjb-aV-bf2" secondAttribute="top" id="27S-ws-bR3"/>
+                <constraint firstItem="SvX-ci-Ux0" firstAttribute="top" secondItem="GHR-oH-UvD" secondAttribute="top" id="27S-ws-bR3"/>
                 <constraint firstItem="SvX-ci-Ux0" firstAttribute="leading" secondItem="GHR-oH-UvD" secondAttribute="leading" id="Oj7-3G-yVj"/>
-                <constraint firstAttribute="bottom" secondItem="SvX-ci-Ux0" secondAttribute="bottom" id="TQN-Qb-dkB"/>
+                <constraint firstItem="GHR-oH-UvD" firstAttribute="bottom" secondItem="SvX-ci-Ux0" secondAttribute="bottom" id="TQN-Qb-dkB"/>
                 <constraint firstItem="GHR-oH-UvD" firstAttribute="trailing" secondItem="SvX-ci-Ux0" secondAttribute="trailing" id="bAg-wc-tiP"/>
             </constraints>
             <point key="canvasLocation" x="1023.6641221374045" y="53.521126760563384"/>

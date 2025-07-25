@@ -15,7 +15,6 @@ class TeacherListViewController: UIViewController {
     private var teachers: [Teacher] = []
     private var avatarTeachers: [Teacher] = []
     private var allTeachers: [Teacher] = []
-    var filteredTeachers: [Teacher] = []
 
     var teacherListVM: TeacherListViewModel!
 
@@ -88,6 +87,7 @@ class TeacherListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -105,7 +105,7 @@ class TeacherListViewController: UIViewController {
                 self.teachers = result
                 self.allTeachers = result
                 self.avatarTeachers = result.filter { $0.countryName == "セルビア" }
-
+                //self.avatarTeachers = result.filter { $0.avatarFlg == 1 }
 //                self.teachers.sort { ($0.rating ?? 0) > ($1.rating ?? 0) }
 
                 let teacherListVM = TeacherListViewModel(teachers: self.teachers)
@@ -289,8 +289,8 @@ extension TeacherListViewController: UICollectionViewDataSource {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TeacherListCell
 
-            let viewModel = teacherListVM.filteredTeachers[indexPath.row]
-            cell.configure(with: viewModel)
+            let teacherVM = teacherListVM.filteredTeachers[indexPath.row]
+            cell.configure(with: teacherVM)
 
             return cell
         }
@@ -306,13 +306,10 @@ extension TeacherListViewController: UICollectionViewDataSource {
             _ tableView: UITableView,
             didSelectRowAt indexPath: IndexPath
         ){
-            let selectedTeacher = teachers[indexPath.row]
-            let allTeachers = teachers
+            self.navigationController?.setNavigationBarHidden(false, animated: false)
+            let selectedTeacherVM = teacherListVM.filteredTeachers[indexPath.row]
+            let swiftUIView = TeacherDetailsSwiftUIView(viewModel: selectedTeacherVM).environmentObject(teacherListVM!)
 
-            let teacherListViewModel = TeacherListViewModel(teachers: allTeachers)
-            let teacherViewModel = TeacherViewModel(teacher: selectedTeacher)
-
-            let swiftUIView = TeacherDetailsSwiftUIView(viewModel: teacherViewModel).environmentObject(teacherListVM!)
             let hostingController = UIHostingController(rootView: swiftUIView)
             self.navigationController?.pushViewController(hostingController, animated: true)
 

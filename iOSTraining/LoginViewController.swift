@@ -18,7 +18,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupTextField()
     }
     
     @IBAction func signInAction(_ sender: UIButton) {
@@ -62,29 +62,19 @@ class LoginViewController: UIViewController {
     @IBAction func rememberMeButton(_ sender: Any) {
     }
     
-    func setupTextFieldIcons() {
+    func setupTextField() {
 
-        let userIcon = UIImageView(image: UIImage(named: "user"))
-        userIcon.contentMode = .scaleAspectFit
-        userIcon.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        let grayColor = UIColor.gray.withAlphaComponent(0.7)
 
-        let userPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 24))
-        userPaddingView.addSubview(userIcon)
-        userIcon.center = userPaddingView.center
+        userNameTextField.attributedPlaceholder = NSAttributedString(
+            string: "Username",
+            attributes: [.foregroundColor: grayColor]
+        )
 
-        userNameTextField.leftView = userPaddingView
-        userNameTextField.leftViewMode = .always
-
-        let passwordIcon = UIImageView(image: UIImage(named: "lock"))
-        passwordIcon.contentMode = .scaleAspectFit
-        passwordIcon.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-
-        let passwordPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 24))
-        passwordPaddingView.addSubview(passwordIcon)
-        passwordIcon.center = passwordPaddingView.center
-
-        passwordTextField.leftView = passwordPaddingView
-        passwordTextField.leftViewMode = .always
+        passwordTextField.attributedPlaceholder = NSAttributedString(
+            string: "Password",
+            attributes: [.foregroundColor: grayColor]
+        )
     }
 }
 

@@ -14,7 +14,7 @@ final class NetworkManager {
     let url = "https://english-staging.fdc-inc.com/api/teachers/search?src_view=home"
 
     let parameters: [String: Any] = [
-        "order": "2",
+        "order": 2,
         "users_api_token": "37b2c9241f28e3aa9598f31425e8937b",
         "account_status" : 3,
         "conditions" : [
@@ -46,5 +46,27 @@ final class NetworkManager {
                 }
             }
     }
+
+//    func getTeachers(completion: @escaping ([Teacher]?) -> Void) {
+//        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+//            .validate()
+//            .responseJSON { raw in
+//                dump(raw.value)
+//            }
+//            .responseDecodable(of: TeachersResponse.self) { response in
+//                switch response.result {
+//                case .success(let teachersResponse):
+//                    dump(teachersResponse.teachers)
+//                    completion(teachersResponse.teachers)
+//                case .failure(let error):
+//                    print("Decoding error:", error)
+//                    if let data = response.request?.httpBody,
+//                       let jsonString = String(data: data, encoding: .utf8) {
+//                        print("Sent JSON:\n\(jsonString)")
+//                    }
+//                    completion(nil)
+//                }
+//            }
+//    }
 }
 
